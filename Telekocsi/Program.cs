@@ -28,7 +28,7 @@ namespace Telekocsi
                 igeny.Add(new Igeny(sr.ReadLine()));
             }
             sr.Close();
-            Console.WriteLine("2. feladat\n\t{0} autós hirdet fuvart",autok.Count);
+            Console.WriteLine("2. feladat\n\t{0} autós hirdet fuvart", autok.Count);
         }
         static void Harmadik()
         {
@@ -90,23 +90,24 @@ namespace Telekocsi
         static void Otodik()
         {
             Console.WriteLine("5. feladat");
-            /*foreach (var a in autok)
-            {
-                foreach (var i in igeny)
-                {
-                    if (a.Indulas == i.Indulas && a.Cel == i.Cel)
-                    {
-                        Console.WriteLine($"\t{i.Azonosito} => {a.Rendszam}");
-                    }
-                }
-            }*/
             foreach (var igeny in igeny)
             {
                 int i = 0;
-                while (i < autok.Count && igeny.Indulas == autok[i].Indulas && igeny.Cel == autok[i].Cel && igeny.Szemelyek <= autok[i].Hely)
+                while (i < autok.Count &&
+                  !(
+                      igeny.Indulas == autok[i].Indulas &&
+                      igeny.Cel == autok[i].Cel &&
+                      igeny.Szemelyek <= autok[i].Hely
+                   )
+                )
                 {
                     i++;
-                    Console.WriteLine($"{igeny.Azonosito} => {autok[i].Rendszam}");
+                }
+
+                if (i < autok.Count)
+                {
+                    Console.WriteLine($"{igeny.Azonosito}=>{autok[i].Rendszam}");
+
                 }
             }
         }
@@ -116,30 +117,39 @@ namespace Telekocsi
             /* Az igénylő sikeres párosítás esetén megkapja az autó
             rendszámát és a sofőr telefonszámát, sikertelen párosítás esetén egy „Sajnos nem
             sikerült autót találni” üzenetet kap. */
-            foreach (var a in autok)
+            foreach (var igeny in igeny)
             {
-                foreach (var i in igeny)
+                int i = 0;
+                while (i < autok.Count &&
+                  !(
+                      igeny.Indulas == autok[i].Indulas &&
+                      igeny.Cel == autok[i].Cel &&
+                      igeny.Szemelyek <= autok[i].Hely
+                   )
+                )
                 {
-                    if (a.Indulas==i.Indulas && a.Cel==i.Cel && a.Hely >= i.Szemelyek)
-                    {
-                        iro.WriteLine($"{i.Azonosito} Rendszám: {a.Rendszam}, Telefonszám: {a.Telefonszam}");
-                    }
-                    else if (a.Indulas != i.Indulas && a.Cel == i.Cel && a.Hely >= i.Szemelyek)
-                    {
-                        iro.WriteLine($"{i.Azonosito} Sajnos nem sikerült autót találni.");
-                    }
+                    i++;
+                }
+
+                if (i < autok.Count)
+                {
+                   iro.WriteLine($"{igeny.Azonosito}: Rendszám: {autok[i].Rendszam}, Telefonszám: {autok[i].Telefonszam}");
+                }
+                else
+                {
+                    iro.WriteLine($"{igeny.Azonosito}: Sajnos nem sikerült autót találni");
                 }
             }
-            iro.Close();
+                iro.Close();
         }
-        static void Main(string[] args)
-        {
-            Beolvas();
-            Harmadik();
-            Negyedik();
-            Otodik();
-            Hatodik();
-            Console.ReadKey();
+            static void Main(string[] args)
+            {
+                Beolvas();
+                Harmadik();
+                Negyedik();
+                Otodik();
+                Hatodik();
+                Console.ReadKey();
+            }
         }
     }
-}
