@@ -90,7 +90,7 @@ namespace Telekocsi
         static void Otodik()
         {
             Console.WriteLine("5. feladat");
-            foreach (var a in autok)
+            /*foreach (var a in autok)
             {
                 foreach (var i in igeny)
                 {
@@ -98,6 +98,15 @@ namespace Telekocsi
                     {
                         Console.WriteLine($"\t{i.Azonosito} => {a.Rendszam}");
                     }
+                }
+            }*/
+            foreach (var igeny in igeny)
+            {
+                int i = 0;
+                while (i < autok.Count && igeny.Indulas == autok[i].Indulas && igeny.Cel == autok[i].Cel && igeny.Szemelyek <= autok[i].Hely)
+                {
+                    i++;
+                    Console.WriteLine($"{igeny.Azonosito} => {autok[i].Rendszam}");
                 }
             }
         }
