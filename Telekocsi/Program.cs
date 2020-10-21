@@ -9,9 +9,91 @@ namespace Telekocsi
 {
     class Program
     {
+        static List<Autok> autok = new List<Autok>();
+        static List<Igeny> igeny = new List<Igeny>();
+        static Dictionary<string, int> Ferohelyek = new Dictionary<string, int>();
+        static void Beolvas()
+        {
+            StreamReader olvas = new StreamReader("autok.csv");
+            olvas.ReadLine();
+            while (!olvas.EndOfStream)
+            {
+                autok.Add(new Autok(olvas.ReadLine()));
+            }
+            olvas.Close();
+            StreamReader sr = new StreamReader("igenyek.csv");
+            sr.ReadLine();
+            while (!sr.EndOfStream)
+            {
+                igeny.Add(new Igeny(sr.ReadLine()));
+            }
+            sr.Close();
+            Console.WriteLine("2. feladat\n\t{0} autós hirdet fuvart",autok.Count);
+        }
+        static void Harmadik()
+        {
+            int ferohely = 0;
+            foreach (var i in autok)
+            {
+                if (i.Indulas == "Budapest" && i.Cel == "Miskolc")
+                {
+                    ferohely = ferohely + i.Hely;
+                }
+            }
+            Console.WriteLine($"3. feladat\n\t Összesen {ferohely} férőhelyet hirdettek" +
+                $"az autósok Budapestről Miskolcra");
+        }
+        static void Negyedik()
+        {
+            List<string> utvonalak = new List<string>();
+            foreach (var a in autok)
+            {
+
+            }
+        }
+        static void Otodik()
+        {
+            Console.WriteLine("5. feladat");
+            foreach (var a in autok)
+            {
+                foreach (var i in igeny)
+                {
+                    if (a.Indulas == i.Indulas && a.Cel == i.Cel)
+                    {
+                        Console.WriteLine($"\t{i.Azonosito} => {a.Rendszam}");
+                    }
+                }
+            }
+        }
+        static void Hatodik()
+        {
+            StreamWriter iro = new StreamWriter("utasuzenetek.txt");
+            /* Az igénylő sikeres párosítás esetén megkapja az autó
+            rendszámát és a sofőr telefonszámát, sikertelen párosítás esetén egy „Sajnos nem
+            sikerült autót találni” üzenetet kap. */
+            foreach (var a in autok)
+            {
+                foreach (var i in igeny)
+                {
+                    if (a.Indulas==i.Indulas && a.Cel==i.Cel && a.Hely >= i.Szemelyek)
+                    {
+                        iro.WriteLine($"{i.Azonosito} Rendszám: {a.Rendszam}, Telefonszám: {a.Telefonszam}");
+                    }
+                    else if (a.Indulas != i.Indulas && a.Cel == i.Cel && a.Hely >= i.Szemelyek)
+                    {
+                        iro.WriteLine($"{i.Azonosito} Sajnos nem sikerült autót találni.");
+                    }
+                }
+            }
+            iro.Close();
+        }
         static void Main(string[] args)
         {
-
+            Beolvas();
+            Harmadik();
+            Negyedik();
+            Otodik();
+            Hatodik();
             Console.ReadKey();
         }
     }
