@@ -7,6 +7,7 @@
         public string Rendszam { get; private set; }
         public string Telefonszam { get; private set; }
         public int Hely { get; private set; }
+        public string Utvonal { get; private set; }
         public Autok(string sor)
         {
             string[] adatok = sor.Split(';');
@@ -15,6 +16,7 @@
             Rendszam = adatok[2];
             Telefonszam = adatok[3];
             Hely = int.Parse(adatok[4]);
+            Utvonal = Indulas + "-" + Cel;
         }
     }
 }

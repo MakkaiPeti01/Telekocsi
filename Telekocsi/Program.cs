@@ -11,7 +11,7 @@ namespace Telekocsi
     {
         static List<Autok> autok = new List<Autok>();
         static List<Igeny> igeny = new List<Igeny>();
-        static Dictionary<string, int> Ferohelyek = new Dictionary<string, int>();
+        static Dictionary<string, int> Utvonalak = new Dictionary<string, int>();
         static void Beolvas()
         {
             StreamReader olvas = new StreamReader("autok.csv");
@@ -45,11 +45,47 @@ namespace Telekocsi
         }
         static void Negyedik()
         {
-            List<string> utvonalak = new List<string>();
-            foreach (var a in autok)
+            /* foreach (var a in autok)
+             {
+                 if (!Utvonalak.ContainsKey(a.Utvonal))
+                 {
+                     Utvonalak.Add(a.Utvonal, a.Hely);
+                 }
+                 else
+                 {
+                     Utvonalak[a.Utvonal] = Utvonalak[a.Utvonal] + a.Hely;
+                 }
+             }            
+             foreach (var i in Utvonalak)
+             {
+                 if (i.Value > max)
+                 {
+                     max = i.Value;
+                     utvonal = i.Key;
+                 }
+             }
+             Console.WriteLine("4.feladat");
+             Console.WriteLine($"A legtöbb férőhelyet ({max}-at) a {utvonal} " +
+                 $"útvonalon ajánlották fel a hirdetők");*/
+            var utvonalak = from a in autok
+                            orderby a.Utvonal
+                            group a by a.Utvonal into temp
+                            select temp;
+            int max = 0;
+            string utvonal = "";
+            foreach (var i in utvonalak)
             {
-
+                //Console.WriteLine($"{i.Key} -> {i.Count()}");
+                int ferohely = i.Sum(x => x.Hely);
+                if (max < ferohely)
+                {
+                    max = ferohely;
+                    utvonal = i.Key;
+                }
             }
+            Console.WriteLine("4. feladat");
+            Console.WriteLine($"A legtöbb férőhelyet ({max}-at) a {utvonal} " +
+                 $"útvonalon ajánlották fel a hirdetők");
         }
         static void Otodik()
         {
