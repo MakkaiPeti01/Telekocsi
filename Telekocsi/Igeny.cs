@@ -14,5 +14,27 @@
             Cel = adatok[2];
             Szemelyek = int.Parse(adatok[3]);
         }
+        public int VanAuto(List<Autok> autok)
+        {
+            int i = 0;
+            while (i < autok.Count &&
+              !(
+                  Utvonal == autok[i].Utvonal &&
+                  Szemelyek <= autok[i].Hely
+              )
+            )
+            {
+                i++;
+            }
+
+            if (i < autok.Count)
+            {
+                return i;
+            }
+            else
+            {
+                return -1;
+            }
+        }
     }
 }
